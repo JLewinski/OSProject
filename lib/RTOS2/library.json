@@ -1,0 +1,23 @@
+{
+    "name": "RTOS2",
+    "description": "FreeRTOS for stm32",
+    "keywords": "ROTS",
+    "authors": "Jacob Lewinski",
+    "downloadUrl": "https://github.com/jlewinski/rtos2/archive/master.zip",
+    "version": "1.0.2",
+    "export": {
+        "include": [
+            "Include/*.h",
+            "RTX/Config/*.[ch]",
+            "RTX/Include/*.h",
+            "RTX/Include1/*.h",
+            "RTX/Source/*.[ch]",
+            "RTX/Library/*.[ach]",
+            "RTX/Library/*/*.[ach]",
+            "RTX/Library/*/*/*.[ach]",
+            "RTX/Library/*/*/*/*.[ach]",
+            "RTX/Library/IAR/IDE/RTE_Component.h"
+        ]
+    },
+    "platforms": "ststm32"
+}
