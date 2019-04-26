@@ -20,7 +20,7 @@ void app_main(void *argument)
 {
     dimension = dimensionX;
     sensor = Gyroscope;
-    tid_phaseA = osThreadNew(compute, NULL, NULL);
+    tid_compute = osThreadNew(compute, NULL, NULL);
     tid_print = osThreadNew(printCharacters, NULL, NULL);
     tid_clock = osThreadNew(clock, NULL, NULL);
     tid_gyro = osThreadNew(gyro, NULL, NULL);
@@ -150,20 +150,21 @@ void printCharacters(void *argument)
     uint8_t direction;
     while (1)
     {
+        //Having it timeout at 100ms because it should never need to wait that long for the display mutex to become free
         osMutexAcquire(displayMutex, 100);
         if (flags & 4)
         {
             BSP_LCD_GLASS_DisplayChar(statusString[sensor], POINT_OFF, DOUBLEPOINT_OFF, 0);
             BSP_LCD_GLASS_DisplayChar(statusString[sensor] + 1, POINT_OFF, DOUBLEPOINT_OFF, 1);
             BSP_LCD_GLASS_DisplayChar(statusString[sensor] + 2, POINT_OFF, DOUBLEPOINT_ON, 2);
-            osThreadFlagsClear(4);
         }
         if (flags & 2)
         {
             direction = (uint8_t)dimension + 'X';
             BSP_LCD_GLASS_DisplayChar(&direction, POINT_OFF, DOUBLEPOINT_ON, 3);
-            osThreadFlagsClear(2);
         }
+        //clear the flag
+        osThreadFlagsClear(flags);
         osMutexRelease(displayMutex);
 
         flags = osThreadFlagsWait(7, osFlagsWaitAny, osWaitForever);
@@ -179,6 +180,7 @@ void printTime(void *argument)
     while (1)
     {
         osMessageQueueGet(clockPrintQueue, msg, NULL, 1000);
+        //Having it timeout at 100ms because it should never need to wait that long for the display mutex to become free
         osMutexAcquire(displayMutex, 100);
 
         BSP_LCD_GLASS_DisplayChar(msg + 1, POINT_OFF, DOUBLEPOINT_OFF, 4);
@@ -193,6 +195,7 @@ void clock(void *argument)
     uint32_t msg[2] = {'0', '0'}, ticks;
     while (1)
     {
+        ticks = osKernelGetTickCount() + 1000;
         osEventFlagsWait(workFlag, 1, osFlagsNoClear, osWaitForever);
         msg[0]++;
         if (msg[0] > '9')
@@ -204,8 +207,7 @@ void clock(void *argument)
                 msg[1] = '0';
             }
         }
-        ticks = osKernelGetTickCount() + 1000;
-        if (osMessageQueuePut(clockPrintQueue, msg, 1, 1000) != osOK)
+        if (osMessageQueuePut(clockPrintQueue, msg, 1, 500) != osOK)
         {
             osDelayUntil(ticks);
         }

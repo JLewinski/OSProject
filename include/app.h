@@ -10,7 +10,7 @@
 #define MyAPP
 
 //IDs for threads
-osThreadId_t tid_print, tid_phaseA, tid_clock, tid_gyro, tid_acc, tid_mag, tid_printMess;
+osThreadId_t tid_print, tid_compute, tid_clock, tid_gyro, tid_acc, tid_mag, tid_printMess;
 //Queue to pass data to the last 2 inputs for the LCD
 osMessageQueueId_t clockPrintQueue;
 
