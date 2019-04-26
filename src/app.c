@@ -50,7 +50,7 @@ void gyro(void *argument)
     }
 }
 
-//Gets data from accelarometer
+//Gets data from accelerometer
 void acc(void *argument)
 {
     while (1)

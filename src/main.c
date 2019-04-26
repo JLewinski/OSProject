@@ -13,7 +13,7 @@
 #include "RTX/Library/IAR/IDE/RTE_Components.h"
 #include "app.h"
 
-//----------------PIN Ineterupts for JOY STICK------------------
+//----------------PIN Interrupts for JOY STICK------------------
 void EXTI0_IRQHandler(void)
 {
     HAL_GPIO_EXTI_IRQHandler(GPIO_PIN_0);

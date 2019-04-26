@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------
- * Name:        app.c
+ * Name:        app.h
  * Purpose:     Defines variables and functions to be used by app.c and some
  *              which are referenced/used by main.c
  * Designer:    Jacob Lewinski
